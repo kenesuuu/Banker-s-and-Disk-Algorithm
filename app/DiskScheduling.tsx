@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 
 const DiskScheduling = () => {
-  const [sequence, setSequence] = useState([]);
-  const [headPosition, setHeadPosition] = useState(50);
-  const [requests, setRequests] = useState([]);
-  const [output, setOutput] = useState("");
-  const [newRequest, setNewRequest] = useState('');
+  const [sequence, setSequence] = useState<number[]>([]);
+  const [headPosition, setHeadPosition] = useState<number>(50);
+  const [requests, setRequests] = useState<number[]>([]);
+  const [output, setOutput] = useState<string>("");
+  const [newRequest, setNewRequest] = useState<string>('');
 
   const handleAddRequest = () => {
-    const request = parseInt(newRequest);
+    const request = parseInt(newRequest, 10);
     if (!isNaN(request)) {
-      setRequests([...requests, request]);
+      setRequests((prevRequests) => [...prevRequests, request]);
       setNewRequest('');
     } else {
       alert('Please enter a valid number.');
@@ -24,19 +24,19 @@ const DiskScheduling = () => {
       return;
     }
 
-    const sequence = [];
+    const newSequence: number[] = [];
     let totalHeadMovement = 0;
     let currentPosition = headPosition;
 
     for (let i = 0; i < totalRequests; i++) {
       const request = requests[i];
-      sequence.push(request);
+      newSequence.push(request);
       totalHeadMovement += Math.abs(currentPosition - request);
       currentPosition = request;
     }
 
-    setSequence(sequence);
-    setOutput(`Sequence: ${sequence.join(' -> ')}, Total Head Movement: ${totalHeadMovement}`);
+    setSequence(newSequence);
+    setOutput(`Sequence: ${newSequence.join(' -> ')}, Total Head Movement: ${totalHeadMovement}`);
   };
 
   return (

@@ -42,20 +42,20 @@ const BankersAlgorithm = () => {
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     if (id === 'resourceA') setResourceA(value);
     else if (id === 'resourceB') setResourceB(value);
     else if (id === 'resourceC') setResourceC(value);
   };
 
-  const handleAddAllocation = (i, j, value) => {
+  const handleAddAllocation = (i: number, j: number, value: string) => {
     const newAllocationMatrix = [...allocationMatrix];
     newAllocationMatrix[i][j] = value;
     setAllocationMatrix(newAllocationMatrix);
   };
 
-  const handleAddMax = (i, j, value) => {
+  const handleAddMax = (i: number, j: number, value: string) => {
     const newMaxMatrix = [...maxMatrix];
     newMaxMatrix[i][j] = value;
     setMaxMatrix(newMaxMatrix);
@@ -63,30 +63,30 @@ const BankersAlgorithm = () => {
 
   const handleSample = () => {
     const sampleAllocation = [
-      [0, 1, 0],
-      [2, 0, 0],
-      [3, 0, 2],
-      [2, 1, 1],
-      [0, 0, 2]
+      ['0', '1', '0'],
+      ['2', '0', '0'],
+      ['3', '0', '2'],
+      ['2', '1', '1'],
+      ['0', '0', '2']
     ];
 
     const sampleMax = [
-      [7, 5, 3],
-      [3, 2, 2],
-      [9, 0, 2],
-      [2, 2, 2],
-      [4, 3, 3]
+      ['7', '5', '3'],
+      ['3', '2', '2'],
+      ['9', '0', '2'],
+      ['2', '2', '2'],
+      ['4', '3', '3']
     ];
 
     setAllocationMatrix(sampleAllocation);
     setMaxMatrix(sampleMax);
-    setResourceA(10);
-    setResourceB(5);
-    setResourceC(7);
+    setResourceA('10');
+    setResourceB('5');
+    setResourceC('7');
   };
 
   const findAvailable = () => {
-    const sumColumn = (matrix, colIndex) => matrix.reduce((acc, row) => acc + parseInt(row[colIndex]), 0);
+    const sumColumn = (matrix: string[][], colIndex: number) => matrix.reduce((acc, row) => acc + parseInt(row[colIndex]), 0);
 
     const totalResourceA = parseInt(resourceA);
     const totalResourceB = parseInt(resourceB);
@@ -100,12 +100,12 @@ const BankersAlgorithm = () => {
     const availableResourceB = totalResourceB - usedResourceB;
     const availableResourceC = totalResourceC - usedResourceC;
 
-    setAvailableMatrix([availableResourceA, availableResourceB, availableResourceC]);
+    setAvailableMatrix([availableResourceA, availableResourceB, availableResourceC].map(String));
   };
 
   const findNeed = () => {
     const newNeedMatrix = allocationMatrix.map((row, i) =>
-      row.map((col, j) => parseInt(maxMatrix[i][j]) - parseInt(allocationMatrix[i][j]))
+      row.map((col, j) => (parseInt(maxMatrix[i][j]) - parseInt(allocationMatrix[i][j])).toString())
     );
     setNeedMatrix(newNeedMatrix);
   };
@@ -123,7 +123,7 @@ const BankersAlgorithm = () => {
 
   return (
     <div className="bg-black text-white p-4 rounded">
-      <h2 className="text-xl mb-4">Banker&#39;s Algorithm Simulation</h2>
+      <h2 className="text-xl mb-4">Banker&apos;s Algorithm Simulation</h2>
       <div className="mb-4">
         <input type="number" id="resourceA" placeholder="Enter resource A" value={resourceA} onChange={handleInputChange} className="bg-gray-800 text-white rounded px-4 py-2 mr-2 mb-2" />
         <input type="number" id="resourceB" placeholder="Enter resource B" value={resourceB} onChange={handleInputChange} className="bg-gray-800 text-white rounded px-4 py-2 mr-2 mb-2" />
