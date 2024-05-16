@@ -123,7 +123,7 @@ const BankersAlgorithm = () => {
 
   return (
     <div className="bg-black text-white p-4 rounded">
-      <h2 className="text-xl mb-4">Banker's Algorithm Simulation</h2>
+      <h2 className="text-xl mb-4">Banker&#39;s Algorithm Simulation</h2>
       <div className="mb-4">
         <input type="number" id="resourceA" placeholder="Enter resource A" value={resourceA} onChange={handleInputChange} className="bg-gray-800 text-white rounded px-4 py-2 mr-2 mb-2" />
         <input type="number" id="resourceB" placeholder="Enter resource B" value={resourceB} onChange={handleInputChange} className="bg-gray-800 text-white rounded px-4 py-2 mr-2 mb-2" />
