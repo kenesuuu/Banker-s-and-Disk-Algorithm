@@ -18,8 +18,7 @@ const DiskScheduling = () => {
   };
 
   const calculateFCFS = () => {
-    const totalRequests = requests.length;
-    if (totalRequests === 0) {
+    if (requests.length === 0) {
       setOutput("No requests to process.");
       return;
     }
@@ -28,20 +27,53 @@ const DiskScheduling = () => {
     let totalHeadMovement = 0;
     let currentPosition = headPosition;
 
-    for (let i = 0; i < totalRequests; i++) {
-      const request = requests[i];
+    requests.forEach((request) => {
       newSequence.push(request);
       totalHeadMovement += Math.abs(currentPosition - request);
       currentPosition = request;
-    }
+    });
 
     setSequence(newSequence);
-    setOutput(`Sequence: ${newSequence.join(' -> ')}, Total Head Movement: ${totalHeadMovement}`);
+    setOutput(`FCFS Sequence: ${newSequence.join(' -> ')}, Total Head Movement: ${totalHeadMovement}`);
+  };
+
+  const calculateSCAN = () => {
+    if (requests.length === 0) {
+      setOutput("No requests to process.");
+      return;
+    }
+
+    const sortedRequests = [...requests].sort((a, b) => a - b);
+    const left = sortedRequests.filter((request) => request <= headPosition).reverse();
+    const right = sortedRequests.filter((request) => request > headPosition);
+
+    const newSequence = [...left, ...right];
+    let totalHeadMovement = Math.abs(headPosition - left[0]) + Math.abs(left[0] - right[right.length - 1]);
+
+    setSequence(newSequence);
+    setOutput(`SCAN Sequence: ${newSequence.join(' -> ')}, Total Head Movement: ${totalHeadMovement}`);
+  };
+
+  const calculateCSCAN = () => {
+    if (requests.length === 0) {
+      setOutput("No requests to process.");
+      return;
+    }
+
+    const sortedRequests = [...requests].sort((a, b) => a - b);
+    const left = sortedRequests.filter((request) => request < headPosition);
+    const right = sortedRequests.filter((request) => request >= headPosition);
+
+    const newSequence = [...right, ...left];
+    let totalHeadMovement = Math.abs(headPosition - right[0]) + Math.abs(right[right.length - 1] - left[0]) + Math.abs(left[left.length - 1]);
+
+    setSequence(newSequence);
+    setOutput(`C-SCAN Sequence: ${newSequence.join(' -> ')}, Total Head Movement: ${totalHeadMovement}`);
   };
 
   return (
     <div className="bg-black text-white p-4 rounded">
-      <h2 className="text-xl mb-4">Disk Scheduling Algorithm</h2>
+      <h2 className="text-xl mb-4">Disk Scheduling Algorithms</h2>
       <div className="mb-4">
         <input
           type="text"
@@ -53,8 +85,11 @@ const DiskScheduling = () => {
         <button className="bg-white text-black rounded px-4 py-2" onClick={handleAddRequest}>Add Request</button>
       </div>
 
-      <button className="bg-white text-black rounded px-4 py-2 mb-2" onClick={calculateFCFS}>Calculate FCFS</button>
-      
+      <div className="flex flex-col gap-2">
+        <button className="bg-white text-black rounded px-4 py-2" onClick={calculateFCFS}>Calculate FCFS</button>
+        <button className="bg-white text-black rounded px-4 py-2" onClick={calculateSCAN}>Calculate SCAN</button>
+        <button className="bg-white text-black rounded px-4 py-2" onClick={calculateCSCAN}>Calculate C-SCAN</button>
+      </div>
       <h3 className="text-lg mt-4">Output</h3>
       <p>{output}</p>
     </div>
