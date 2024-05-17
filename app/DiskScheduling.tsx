@@ -79,17 +79,27 @@ const DiskScheduling = () => {
           type="text"
           value={newRequest}
           onChange={(e) => setNewRequest(e.target.value)}
-          placeholder="Enter disk request"
+          placeholder="Enter disk request per number"
           className="bg-gray-800 text-white rounded px-4 py-2 mr-2 mb-2"
         />
         <button className="bg-white text-black rounded px-4 py-2" onClick={handleAddRequest}>Add Request</button>
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className="mb-4">
+        <h3 className="text-lg">Requests</h3>
+        <ul>
+          {requests.map((request, index) => (
+            <li key={index}>Request {index + 1}: {request}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="flex flex-col gap-2 mb-4">
         <button className="bg-white text-black rounded px-4 py-2" onClick={calculateFCFS}>Calculate FCFS</button>
         <button className="bg-white text-black rounded px-4 py-2" onClick={calculateSCAN}>Calculate SCAN</button>
         <button className="bg-white text-black rounded px-4 py-2" onClick={calculateCSCAN}>Calculate C-SCAN</button>
       </div>
+      
       <h3 className="text-lg mt-4">Output</h3>
       <p>{output}</p>
     </div>
